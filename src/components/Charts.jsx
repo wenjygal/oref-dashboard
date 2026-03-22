@@ -13,6 +13,8 @@ const tooltipStyle = {
   color: '#e5e5e5',
   fontSize: 13,
 }
+const tooltipItemStyle = { color: '#e5e5e5' }
+const tooltipLabelStyle = { color: '#aaa', marginBottom: 4 }
 
 export function EventTypeDonut({ data }) {
   return (
@@ -33,7 +35,7 @@ export function EventTypeDonut({ data }) {
               <Cell key={i} fill={COLORS[i % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip contentStyle={tooltipStyle} formatter={(v, n) => [v.toLocaleString(), n]} />
+          <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipItemStyle} labelStyle={tooltipLabelStyle} formatter={(v, n) => [v.toLocaleString(), n]} />
           <Legend
             iconType="circle"
             iconSize={8}
@@ -54,7 +56,7 @@ export function RegionBarChart({ data }) {
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
           <XAxis dataKey="name" tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
-          <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(232,93,4,0.1)' }} />
+          <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipItemStyle} labelStyle={tooltipLabelStyle} cursor={{ fill: 'rgba(232,93,4,0.1)' }} />
           <Bar dataKey="value" radius={[4, 4, 0, 0]}>
             {data.map((_, i) => (
               <Cell key={i} fill={COLORS[i % COLORS.length]} />
@@ -67,15 +69,16 @@ export function RegionBarChart({ data }) {
 }
 
 export function TimelineChart({ data }) {
+  const tickInterval = Math.max(1, Math.ceil(data.length / 12))
   return (
     <div className="bg-[#141414] border border-[#2a2020] rounded-xl p-5">
       <h3 className="text-sm font-medium text-gray-300 mb-4">אזעקות לפי תאריך</h3>
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
-          <XAxis dataKey="date" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="date" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} interval={tickInterval} />
           <YAxis tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
-          <Tooltip contentStyle={tooltipStyle} />
+          <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipItemStyle} labelStyle={tooltipLabelStyle} />
           <Line
             type="monotone"
             dataKey="value"
