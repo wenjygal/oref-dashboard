@@ -188,7 +188,7 @@ export default function App() {
               />
               <KPICard
                 icon="📍"
-                label="ישובים שנפגעו"
+                label="ישובים שנשמעה בהם אזעקה"
                 value={uniqueCities.toLocaleString()}
                 color="red"
               />
