@@ -53,7 +53,7 @@ export function RegionBarChart({ data }) {
       <ResponsiveContainer width="100%" height={240} aria-label="גרף עמודות: אזעקות לפי אזור גיאוגרפי">
         <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
-          <XAxis dataKey="name" tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="name" tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} padding={{ left: 20, right: 10 }} />
           <YAxis tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
           <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipItemStyle} labelStyle={tooltipLabelStyle} cursor={{ fill: 'rgba(232,93,4,0.1)' }} />
           <Bar dataKey="value" radius={[4, 4, 0, 0]}>
@@ -75,7 +75,7 @@ export function TimelineChart({ data }) {
       <ResponsiveContainer width="100%" height={220} aria-label="גרף עמודות: אזעקות לפי תאריך">
         <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
-          <XAxis dataKey="date" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} interval={tickInterval} />
+          <XAxis dataKey="date" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} interval={tickInterval} padding={{ left: 20, right: 10 }} />
           <YAxis tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
           <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipItemStyle} labelStyle={tooltipLabelStyle} />
           <Bar dataKey="value" fill="#e85d04" radius={[3, 3, 0, 0]} />

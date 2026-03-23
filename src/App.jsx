@@ -105,6 +105,14 @@ export default function App() {
     return Object.values(cityMap).sort((a, b) => b.count - a.count).slice(0, 10)
   }, [filtered])
 
+  const earliestDate = useMemo(() => {
+    if (!allData.length) return null
+    const min = allData.reduce((m, r) => (r.date && r.date < m ? r.date : m), allData[0].date || '')
+    if (!min) return null
+    const [y, mo, d] = min.split('-')
+    return `${d}.${mo}.${y}`
+  }, [allData])
+
   const lastUpdatedStr = lastUpdated
     ? lastUpdated.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
     : ''
@@ -125,11 +133,14 @@ export default function App() {
         <div>
           <h1 className="text-2xl font-bold text-white">מצב אזעקות IL</h1>
           <p className="text-gray-400 text-sm mt-1">סיכום אזעקות וניתוח סטטיסטי</p>
-          <p className="text-gray-500 text-xs mt-0.5">הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף</p>
+          <p className="text-gray-400 text-xs mt-0.5">
+            הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף
+            {earliestDate && ` (תחילת נתונים: ${earliestDate})`}
+          </p>
         </div>
         <div className="flex items-center gap-3">
           {lastUpdatedStr && (
-            <span className="text-gray-400 text-xs">עודכן לאחרונה ב-{lastUpdatedStr}</span>
+            <span aria-live="polite" aria-atomic="true" className="text-gray-400 text-xs">עודכן לאחרונה ב-{lastUpdatedStr}</span>
           )}
           <button
             onClick={reload}
