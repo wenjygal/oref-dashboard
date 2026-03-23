@@ -179,6 +179,13 @@ export default function App() {
           <Top10Table data={top10Cities} />
         </>
       )}
+
+      {/* Footer */}
+      <footer className="mt-8 pt-6 border-t border-[#2a2020] text-center text-xs text-gray-500 space-y-1">
+        <p>האתר מציג נתונים רשמיים של פיקוד העורף. הנתונים מוצגים כפי שהתקבלו — אין אחריות לנכונותם והשימוש באתר על אחריות המשתמש בלבד.</p>
+        <p>האתר נגיש לפי התקן הישראלי · פתוח לכולם · אינו שומר פרטים אישיים.</p>
+        <p>ליצירת קשר: <a href="mailto:meimagineai@gmail.com" className="text-gray-400 hover:text-white underline transition-colors">MEIMAGINEAI</a></p>
+      </footer>
     </div>
   )
 }
