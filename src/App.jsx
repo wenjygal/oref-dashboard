@@ -63,10 +63,11 @@ export default function App() {
     return [...s].sort()
   }, [baseFiltered])
 
-  // Full filtered data (includes city filter)
+  // Full filtered data (includes city text search)
   const filtered = useMemo(() => {
     if (!filters.city) return baseFiltered
-    return baseFiltered.filter(r => r.city === filters.city)
+    const q = filters.city.trim()
+    return baseFiltered.filter(r => r.city && r.city.includes(q))
   }, [baseFiltered, filters.city])
 
   // KPIs

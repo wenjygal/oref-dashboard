@@ -93,16 +93,19 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           {regions.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
 
-        {/* City */}
-        <select
+        {/* City search */}
+        <input
+          type="text"
           value={filters.city}
           onChange={e => setFilters(f => ({ ...f, city: e.target.value }))}
-          aria-label="סינון לפי ישוב"
-          className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
-        >
-          <option value="">כל הישובים</option>
-          {cities.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
+          list="cities-datalist"
+          placeholder="חיפוש ישוב..."
+          aria-label="חיפוש לפי ישוב"
+          className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 placeholder-gray-600 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04] w-36"
+        />
+        <datalist id="cities-datalist">
+          {cities.map(c => <option key={c} value={c} />)}
+        </datalist>
 
         {/* Event type */}
         <select
