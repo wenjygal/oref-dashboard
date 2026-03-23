@@ -118,7 +118,7 @@ export default function App() {
     : ''
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] p-6 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#0d0d0d] px-3 py-4 sm:p-6 max-w-7xl mx-auto">
 
       {/* Skip navigation */}
       <a
@@ -129,9 +129,9 @@ export default function App() {
       </a>
 
       {/* Header */}
-      <header className="flex items-start justify-between mb-6">
+      <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">מצב אזעקות IL</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">מצב אזעקות IL</h1>
           <p className="text-gray-400 text-sm mt-1">סיכום אזעקות וניתוח סטטיסטי</p>
           <p className="text-gray-400 text-xs mt-0.5">
             הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף

@@ -35,9 +35,10 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
   }
 
   const active = activePreset()
+  const inputCls = "bg-[#1e1e1e] border border-[#333] text-white text-xs sm:text-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
 
   return (
-    <div className="flex flex-col gap-3 bg-[#141414] border border-[#2a2020] rounded-xl p-4">
+    <div className="flex flex-col gap-3 bg-[#141414] border border-[#2a2020] rounded-xl p-3 sm:p-4">
       {/* Quick date presets */}
       <div className="flex flex-wrap gap-2" role="group" aria-label="סינון מהיר לפי תקופה">
         {DATE_PRESETS.map(({ label, days }) => (
@@ -45,7 +46,7 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
             key={label}
             onClick={() => applyPreset(days)}
             aria-pressed={active === label}
-            className={`text-sm px-4 py-1.5 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#141414] ${
+            className={`text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-1.5 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#141414] ${
               active === label
                 ? 'bg-[#e85d04] border-[#e85d04] text-white'
                 : 'bg-[#1e1e1e] border-[#333] text-gray-400 hover:text-white hover:border-[#e85d04]'
@@ -57,28 +58,28 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
       </div>
 
       {/* Filter controls */}
-      <div className="flex flex-wrap gap-3 items-center">
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 items-center">
         {/* Date from */}
-        <label className="flex items-center gap-2">
-          <span className="text-gray-400 text-sm">מ:</span>
+        <label className="flex items-center gap-1 sm:gap-2">
+          <span className="text-gray-400 text-xs sm:text-sm shrink-0">מ:</span>
           <input
             type="date"
             value={filters.dateFrom}
             onChange={e => setFilters(f => ({ ...f, dateFrom: e.target.value }))}
             aria-label="מתאריך"
-            className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
+            className={`${inputCls} w-full`}
           />
         </label>
 
         {/* Date to */}
-        <label className="flex items-center gap-2">
-          <span className="text-gray-400 text-sm">עד:</span>
+        <label className="flex items-center gap-1 sm:gap-2">
+          <span className="text-gray-400 text-xs sm:text-sm shrink-0">עד:</span>
           <input
             type="date"
             value={filters.dateTo}
             onChange={e => setFilters(f => ({ ...f, dateTo: e.target.value }))}
             aria-label="עד תאריך"
-            className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
+            className={`${inputCls} w-full`}
           />
         </label>
 
@@ -87,7 +88,7 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           value={filters.region}
           onChange={e => setFilters(f => ({ ...f, region: e.target.value, city: '' }))}
           aria-label="סינון לפי אזור"
-          className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
+          className={inputCls}
         >
           <option value="">כל האזורים</option>
           {regions.map(r => <option key={r} value={r}>{r}</option>)}
@@ -101,7 +102,7 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           list="cities-datalist"
           placeholder="חיפוש ישוב..."
           aria-label="חיפוש לפי ישוב"
-          className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 placeholder-gray-600 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04] w-36"
+          className={`${inputCls} placeholder-gray-600 w-full sm:w-36`}
         />
         <datalist id="cities-datalist">
           {cities.map(c => <option key={c} value={c} />)}
@@ -112,7 +113,7 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           value={filters.eventType}
           onChange={e => setFilters(f => ({ ...f, eventType: e.target.value }))}
           aria-label="סינון לפי סוג אירוע"
-          className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
+          className={inputCls}
         >
           <option value="">כל הסוגים</option>
           {eventTypes.map(t => <option key={t} value={t}>{t}</option>)}
@@ -121,7 +122,7 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
         {/* Reset */}
         <button
           onClick={onReset}
-          className="flex items-center gap-1 text-sm text-gray-400 hover:text-white border border-[#333] rounded-lg px-3 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#141414]"
+          className="flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white border border-[#333] rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#141414]"
         >
           <span aria-hidden="true">↺</span> אפס פילטרים
         </button>
