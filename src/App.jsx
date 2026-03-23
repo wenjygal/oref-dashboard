@@ -94,11 +94,11 @@ export default function App() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">מצב התראות IL</h1>
-          <p className="text-gray-500 text-sm mt-1">סיכום התראות וניתוח סטטיסטי</p>
+          <p className="text-gray-400 text-sm mt-1">סיכום התראות וניתוח סטטיסטי</p>
         </div>
         <div className="flex items-center gap-3">
           {lastUpdatedStr && (
-            <span className="text-gray-500 text-xs">עודכן לאחרונה ב-{lastUpdatedStr}</span>
+            <span className="text-gray-400 text-xs">עודכן לאחרונה ב-{lastUpdatedStr}</span>
           )}
           <button
             onClick={reload}
@@ -112,7 +112,7 @@ export default function App() {
 
       {/* Error */}
       {error && (
-        <div className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-6 text-red-300 text-sm">
+        <div role="alert" className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-6 text-red-300 text-sm">
           שגיאה בטעינת נתונים: {error}
         </div>
       )}
@@ -129,7 +129,7 @@ export default function App() {
       </div>
 
       {loading && (
-        <div className="text-center text-gray-500 py-20 text-sm">טוען נתונים...</div>
+        <div role="status" aria-live="polite" className="text-center text-gray-500 py-20 text-sm">טוען נתונים...</div>
       )}
 
       {!loading && (

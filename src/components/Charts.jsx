@@ -18,8 +18,8 @@ const tooltipLabelStyle = { color: '#aaa', marginBottom: 4 }
 export function EventTypeDonut({ data }) {
   return (
     <div className="bg-[#141414] border border-[#2a2020] rounded-xl p-5">
-      <h3 className="text-sm font-medium text-gray-300 mb-4">פילוח לפי סוג אירוע</h3>
-      <ResponsiveContainer width="100%" height={240}>
+      <h2 className="text-sm font-medium text-gray-300 mb-4">פילוח לפי סוג אירוע</h2>
+      <ResponsiveContainer width="100%" height={240} aria-label="גרף עוגה: פילוח אזעקות לפי סוג אירוע">
         <PieChart>
           <Pie
             data={data}
@@ -49,8 +49,8 @@ export function EventTypeDonut({ data }) {
 export function RegionBarChart({ data }) {
   return (
     <div className="bg-[#141414] border border-[#2a2020] rounded-xl p-5">
-      <h3 className="text-sm font-medium text-gray-300 mb-4">אזעקות לפי אזור</h3>
-      <ResponsiveContainer width="100%" height={240}>
+      <h2 className="text-sm font-medium text-gray-300 mb-4">אזעקות לפי אזור</h2>
+      <ResponsiveContainer width="100%" height={240} aria-label="גרף עמודות: אזעקות לפי אזור גיאוגרפי">
         <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
           <XAxis dataKey="name" tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -71,8 +71,8 @@ export function TimelineChart({ data }) {
   const tickInterval = Math.max(0, Math.ceil(data.length / 12) - 1)
   return (
     <div className="bg-[#141414] border border-[#2a2020] rounded-xl p-5">
-      <h3 className="text-sm font-medium text-gray-300 mb-4">אזעקות לפי תאריך</h3>
-      <ResponsiveContainer width="100%" height={220}>
+      <h2 className="text-sm font-medium text-gray-300 mb-4">אזעקות לפי תאריך</h2>
+      <ResponsiveContainer width="100%" height={220} aria-label="גרף עמודות: אזעקות לפי תאריך">
         <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
           <XAxis dataKey="date" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} interval={tickInterval} />
