@@ -1,7 +1,6 @@
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  LineChart, Line,
 } from 'recharts'
 
 const COLORS = ['#e85d04', '#f48c06', '#dc2626', '#b45309', '#7c3aed', '#0891b2', '#059669']
@@ -69,25 +68,18 @@ export function RegionBarChart({ data }) {
 }
 
 export function TimelineChart({ data }) {
-  const tickInterval = Math.max(1, Math.ceil(data.length / 12))
+  const tickInterval = Math.max(0, Math.ceil(data.length / 12) - 1)
   return (
     <div className="bg-[#141414] border border-[#2a2020] rounded-xl p-5">
       <h3 className="text-sm font-medium text-gray-300 mb-4">אזעקות לפי תאריך</h3>
       <ResponsiveContainer width="100%" height={220}>
-        <LineChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
+        <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
           <XAxis dataKey="date" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} interval={tickInterval} />
           <YAxis tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
           <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipItemStyle} labelStyle={tooltipLabelStyle} />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke="#e85d04"
-            strokeWidth={2}
-            dot={{ fill: '#e85d04', r: 3 }}
-            activeDot={{ r: 5 }}
-          />
-        </LineChart>
+          <Bar dataKey="value" fill="#e85d04" radius={[3, 3, 0, 0]} />
+        </BarChart>
       </ResponsiveContainer>
     </div>
   )

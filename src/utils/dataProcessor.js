@@ -4,6 +4,12 @@ import { getRegion } from '../data/regionMap'
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTjrdwICr4aoVXJfz9CytIn9JV8wD1ILAylBKFjXsYAgLSOQOVew9oF49cy4nSgZfnYOa45HBFaFtxC/pub?gid=0&single=true&output=csv'
 const TZEVAADOM_API = 'https://api.tzevaadom.co.il/alerts-history'
 
+const REGION_MERGE = {
+  'גליל עליון': 'גליל',
+  'גליל מערבי': 'גליל',
+}
+function normalizeRegion(r) { return REGION_MERGE[r] || r }
+
 const THREAT_TO_EVENT = {
   0: 'ירי רקטות וטילים',
   1: 'ירי רקטות וטילים',
@@ -13,12 +19,17 @@ const THREAT_TO_EVENT = {
   5: 'ירי רקטות וטילים',
 }
 
-// Parse dd.mm.yyyy → yyyy-mm-dd
+// Parse dd.mm.yyyy or dd/mm/yyyy or yyyy-mm-dd → yyyy-mm-dd
 function parseSheetDate(raw) {
   if (!raw) return null
-  const parts = raw.trim().split('.')
-  if (parts.length === 3) return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`
-  return raw
+  const s = raw.trim()
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10)
+  const parts = s.split(/[./]/)
+  if (parts.length === 3) {
+    const [d, m, y] = parts
+    if (y.length === 4) return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`
+  }
+  return null
 }
 
 // Unix timestamp → { date: 'yyyy-mm-dd', time: 'HH:MM' }
@@ -39,9 +50,11 @@ export async function fetchSheetsData() {
       // Handle both column name variants
       const city = row['ישוב'] || ''
       const rawRegion = row['איזור'] || row['אזור'] || ''
-      const region = (rawRegion && rawRegion !== 'לא ממופה')
-        ? rawRegion
-        : (getRegion(city) || 'לא ממופה')
+      const region = normalizeRegion(
+        (rawRegion && rawRegion !== 'לא ממופה')
+          ? rawRegion
+          : (getRegion(city) || 'לא ממופה')
+      )
 
       return {
         date: parseSheetDate(row['תאריך']),
@@ -72,7 +85,7 @@ export async function fetchTzevaadomData() {
           rows.push({
             date,
             time,
-            region: getRegion(city) || 'לא ממופה',
+            region: normalizeRegion(getRegion(city) || 'לא ממופה'),
             council: '',
             city,
             eventType,
