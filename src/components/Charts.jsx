@@ -19,13 +19,13 @@ export function EventTypeDonut({ data }) {
   return (
     <div className="bg-[#141414] border border-[#2a2020] rounded-xl p-3 sm:p-5">
       <h2 className="text-sm font-medium text-gray-300 mb-4">פילוח לפי סוג אירוע</h2>
-      <div className="h-44 sm:h-60">
+      <div className="h-72 sm:h-72">
         <ResponsiveContainer width="100%" height="100%" aria-label="גרף עוגה: פילוח אזעקות לפי סוג אירוע">
           <PieChart>
             <Pie
               data={data}
               cx="50%"
-              cy="50%"
+              cy="40%"
               innerRadius={55}
               outerRadius={80}
               dataKey="value"
@@ -39,6 +39,7 @@ export function EventTypeDonut({ data }) {
             <Legend
               iconType="circle"
               iconSize={8}
+              wrapperStyle={{ paddingTop: 16 }}
               formatter={v => <span style={{ color: '#ccc', fontSize: 12, maxWidth: 160, wordBreak: 'break-word' }}>{v}</span>}
             />
           </PieChart>
