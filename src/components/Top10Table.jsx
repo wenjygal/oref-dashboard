@@ -4,7 +4,7 @@ export default function Top10Table({ data }) {
       <h2 className="text-sm font-medium text-gray-300 mb-4">TOP 10 ישובים עם הכי הרבה אזעקות</h2>
       <table className="w-full text-sm" aria-label="טבלת 10 הישובים עם הכי הרבה אזעקות">
         <thead>
-          <tr className="text-gray-500 text-xs border-b border-[#2a2020]">
+          <tr className="text-gray-400 text-xs border-b border-[#2a2020]">
             <th scope="col" className="text-right pb-2 font-medium w-8">#</th>
             <th scope="col" className="text-right pb-2 font-medium">ישוב</th>
             <th scope="col" className="text-right pb-2 font-medium">אזור</th>
