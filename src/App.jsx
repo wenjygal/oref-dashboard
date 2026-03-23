@@ -122,8 +122,9 @@ export default function App() {
       {/* Header */}
       <header className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">מצב התרעות IL</h1>
-          <p className="text-gray-400 text-sm mt-1">סיכום התרעות וניתוח סטטיסטי</p>
+          <h1 className="text-2xl font-bold text-white">מצב אזעקות IL</h1>
+          <p className="text-gray-400 text-sm mt-1">סיכום אזעקות וניתוח סטטיסטי</p>
+          <p className="text-gray-500 text-xs mt-0.5">הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף</p>
         </div>
         <div className="flex items-center gap-3">
           {lastUpdatedStr && (
