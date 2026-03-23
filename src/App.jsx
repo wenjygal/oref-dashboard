@@ -5,7 +5,15 @@ import FilterBar from './components/FilterBar'
 import { EventTypeDonut, RegionBarChart, TimelineChart } from './components/Charts'
 import Top10Table from './components/Top10Table'
 
-const DEFAULT_FILTERS = { dateFrom: '', dateTo: '', region: '', eventType: '' }
+const DEFAULT_FILTERS = { dateFrom: '', dateTo: '', region: '', eventType: '', city: '' }
+
+const SUPER_REGIONS = [
+  'גוש דן', 'שרון', 'שפלה', 'ירושלים', 'חיפה', 'גליל',
+  'עמקים', 'כינרת', 'גולן', 'אשדוד', 'אשקלון', 'עוטף עזה',
+  'נגב', 'ים המלח', 'ערבה', 'הר חברון', 'גוש עציון',
+  'מטה בנימין', 'שומרון', 'חבל מודיעין', 'שדות דן', 'חוף אשקלון', 'המשולש',
+]
+const SUPER_REGIONS_SET = new Set(SUPER_REGIONS)
 
 function count(arr, key) {
   return arr.reduce((acc, r) => {
@@ -26,10 +34,10 @@ export default function App() {
   const { allData, loading, error, lastUpdated, reload } = useAlertData()
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
 
-  // Derive unique filter options from full dataset
+  // Only super-regions that actually appear in the data, in canonical order
   const regions = useMemo(() => {
-    const s = new Set(allData.map(r => r.region).filter(Boolean).filter(r => r !== 'לא ממופה'))
-    return [...s].sort()
+    const inData = new Set(allData.map(r => r.region).filter(Boolean))
+    return SUPER_REGIONS.filter(r => inData.has(r))
   }, [allData])
 
   const eventTypes = useMemo(() => {
@@ -37,17 +45,29 @@ export default function App() {
     return [...s].sort()
   }, [allData])
 
-  // Filtered data
-  const filtered = useMemo(() => {
+  // Base filtered data (without city filter) — used to derive city options
+  const baseFiltered = useMemo(() => {
     return allData.filter(r => {
-      if (!r.region || r.region === 'לא ממופה') return false
+      if (!r.region || !SUPER_REGIONS_SET.has(r.region)) return false
       if (filters.dateFrom && r.date < filters.dateFrom) return false
       if (filters.dateTo && r.date > filters.dateTo) return false
       if (filters.region && r.region !== filters.region) return false
       if (filters.eventType && r.eventType !== filters.eventType) return false
       return true
     })
-  }, [allData, filters])
+  }, [allData, filters.dateFrom, filters.dateTo, filters.region, filters.eventType])
+
+  // City options derived from baseFiltered (contextual to current filters)
+  const cities = useMemo(() => {
+    const s = new Set(baseFiltered.map(r => r.city).filter(Boolean))
+    return [...s].sort()
+  }, [baseFiltered])
+
+  // Full filtered data (includes city filter)
+  const filtered = useMemo(() => {
+    if (!filters.city) return baseFiltered
+    return baseFiltered.filter(r => r.city === filters.city)
+  }, [baseFiltered, filters.city])
 
   // KPIs
   const totalAlerts = filtered.length
@@ -57,13 +77,13 @@ export default function App() {
 
   const topEventType = topEntries(eventTypeCounts, 1)[0]
   const topRegion = topEntries(
-    Object.fromEntries(Object.entries(regionCounts).filter(([k]) => k !== 'לא ממופה')), 1
+    Object.fromEntries(Object.entries(regionCounts).filter(([k]) => SUPER_REGIONS_SET.has(k))), 1
   )[0]
 
   // Chart data
   const eventTypeChartData = topEntries(eventTypeCounts)
   const regionChartData = topEntries(
-    Object.fromEntries(Object.entries(regionCounts).filter(([k]) => k !== 'לא ממופה'))
+    Object.fromEntries(Object.entries(regionCounts).filter(([k]) => SUPER_REGIONS_SET.has(k)))
   )
 
   const timelineData = useMemo(() => {
@@ -137,6 +157,7 @@ export default function App() {
             setFilters={setFilters}
             regions={regions}
             eventTypes={eventTypes}
+            cities={cities}
             onReset={() => setFilters(DEFAULT_FILTERS)}
           />
         </div>

@@ -9,7 +9,7 @@ function toDateStr(date) {
   return date.toISOString().slice(0, 10)
 }
 
-export default function FilterBar({ filters, setFilters, regions, eventTypes, onReset }) {
+export default function FilterBar({ filters, setFilters, regions, eventTypes, cities, onReset }) {
   function applyPreset(days) {
     if (days === null) {
       setFilters(f => ({ ...f, dateFrom: '', dateTo: '' }))
@@ -85,12 +85,23 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, on
         {/* Region */}
         <select
           value={filters.region}
-          onChange={e => setFilters(f => ({ ...f, region: e.target.value }))}
+          onChange={e => setFilters(f => ({ ...f, region: e.target.value, city: '' }))}
           aria-label="סינון לפי אזור"
           className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
         >
           <option value="">כל האזורים</option>
           {regions.map(r => <option key={r} value={r}>{r}</option>)}
+        </select>
+
+        {/* City */}
+        <select
+          value={filters.city}
+          onChange={e => setFilters(f => ({ ...f, city: e.target.value }))}
+          aria-label="סינון לפי ישוב"
+          className="bg-[#1e1e1e] border border-[#333] text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
+        >
+          <option value="">כל הישובים</option>
+          {cities.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
 
         {/* Event type */}
