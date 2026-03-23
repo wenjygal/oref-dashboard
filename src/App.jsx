@@ -90,8 +90,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] p-6 max-w-7xl mx-auto">
+
+      {/* Skip navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:right-2 focus:z-50 focus:bg-[#e85d04] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:outline-none"
+      >
+        דלג לתוכן הראשי
+      </a>
+
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      <header className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">מצב התראות IL</h1>
           <p className="text-gray-400 text-sm mt-1">סיכום התראות וניתוח סטטיסטי</p>
@@ -103,88 +112,94 @@ export default function App() {
           <button
             onClick={reload}
             disabled={loading}
-            className="flex items-center gap-1 text-sm text-gray-400 hover:text-white border border-[#333] rounded-lg px-3 py-2 transition-colors disabled:opacity-40"
+            aria-label={loading ? 'טוען נתונים' : 'רענן נתונים'}
+            className="flex items-center gap-1 text-sm text-gray-400 hover:text-white border border-[#333] rounded-lg px-3 py-2 transition-colors disabled:opacity-40 focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#0d0d0d]"
           >
-            {loading ? '...' : '↺'} רענן
+            <span aria-hidden="true">{loading ? '...' : '↺'}</span> רענן
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Error */}
-      {error && (
-        <div role="alert" className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-6 text-red-300 text-sm">
-          שגיאה בטעינת נתונים: {error}
+      {/* Main content */}
+      <main id="main-content">
+
+        {/* Error */}
+        {error && (
+          <div role="alert" className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-6 text-red-300 text-sm">
+            שגיאה בטעינת נתונים: {error}
+          </div>
+        )}
+
+        {/* Filters */}
+        <div className="mb-6">
+          <FilterBar
+            filters={filters}
+            setFilters={setFilters}
+            regions={regions}
+            eventTypes={eventTypes}
+            onReset={() => setFilters(DEFAULT_FILTERS)}
+          />
         </div>
-      )}
 
-      {/* Filters */}
-      <div className="mb-6">
-        <FilterBar
-          filters={filters}
-          setFilters={setFilters}
-          regions={regions}
-          eventTypes={eventTypes}
-          onReset={() => setFilters(DEFAULT_FILTERS)}
-        />
-      </div>
+        {loading && (
+          <div role="status" aria-live="polite" className="text-center text-gray-400 py-20 text-sm">טוען נתונים...</div>
+        )}
 
-      {loading && (
-        <div role="status" aria-live="polite" className="text-center text-gray-500 py-20 text-sm">טוען נתונים...</div>
-      )}
+        {!loading && (
+          <>
+            {/* KPIs */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <KPICard
+                icon="🔥"
+                label="סוג אירוע נפוץ"
+                value={topEventType?.name || '—'}
+                sub={topEventType ? `${topEventType.value.toLocaleString()} פעמים` : ''}
+                color="red"
+              />
+              <KPICard
+                icon="🛡️"
+                label="האזור הכי מופגז"
+                value={topRegion?.name || '—'}
+                sub={topRegion ? `${topRegion.value.toLocaleString()} אזעקות` : ''}
+                color="olive"
+              />
+              <KPICard
+                icon="📍"
+                label="ישובים שנפגעו"
+                value={uniqueCities.toLocaleString()}
+                color="red"
+              />
+              <KPICard
+                icon="🔔"
+                label="מס׳ כ אזעקות"
+                value={totalAlerts.toLocaleString()}
+                color="maroon"
+              />
+            </div>
 
-      {!loading && (
-        <>
-          {/* KPIs */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <KPICard
-              icon="🔥"
-              label="סוג אירוע נפוץ"
-              value={topEventType?.name || '—'}
-              sub={topEventType ? `${topEventType.value.toLocaleString()} פעמים` : ''}
-              color="red"
-            />
-            <KPICard
-              icon="🛡️"
-              label="האזור הכי מופגז"
-              value={topRegion?.name || '—'}
-              sub={topRegion ? `${topRegion.value.toLocaleString()} אזעקות` : ''}
-              color="olive"
-            />
-            <KPICard
-              icon="📍"
-              label="ישובים שנפגעו"
-              value={uniqueCities.toLocaleString()}
-              color="red"
-            />
-            <KPICard
-              icon="🔔"
-              label="מס׳ כ אזעקות"
-              value={totalAlerts.toLocaleString()}
-              color="maroon"
-            />
-          </div>
+            {/* Charts row 1 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+              <EventTypeDonut data={eventTypeChartData} />
+              <RegionBarChart data={regionChartData} />
+            </div>
 
-          {/* Charts row 1 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <EventTypeDonut data={eventTypeChartData} />
-            <RegionBarChart data={regionChartData} />
-          </div>
+            {/* Timeline */}
+            <div className="mb-4">
+              <TimelineChart data={timelineData} />
+            </div>
 
-          {/* Timeline */}
-          <div className="mb-4">
-            <TimelineChart data={timelineData} />
-          </div>
+            {/* Top 10 */}
+            <Top10Table data={top10Cities} />
+          </>
+        )}
 
-          {/* Top 10 */}
-          <Top10Table data={top10Cities} />
-        </>
-      )}
+      </main>
 
       {/* Footer */}
-      <footer className="mt-8 pt-6 border-t border-[#2a2020] text-center text-xs text-gray-500 space-y-1">
+      <footer className="mt-8 pt-6 border-t border-[#2a2020] text-center text-xs text-gray-400 space-y-1">
         <p>האתר מציג נתונים רשמיים של פיקוד העורף. הנתונים מוצגים כפי שהתקבלו — אין אחריות לנכונותם והשימוש באתר על אחריות המשתמש בלבד.</p>
         <p>האתר נגיש לפי התקן הישראלי · פתוח לכולם · אינו שומר פרטים אישיים.</p>
-        <p>ליצירת קשר: <a href="mailto:meimagineai@gmail.com" className="text-gray-400 hover:text-white underline transition-colors">MEIMAGINEAI</a></p>
+        <p>ליצירת קשר: <a href="mailto:meimagineai@gmail.com" className="hover:text-white underline transition-colors focus:outline-none focus:ring-1 focus:ring-[#e85d04] rounded">MEIMAGINEAI</a></p>
       </footer>
     </div>
   )
