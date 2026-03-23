@@ -10,57 +10,34 @@
   <!-- Outer border -->
   <rect x="0" y="0" width="1200" height="630" fill="none" stroke="#1e1e1e" stroke-width="2"/>
 
-  <!-- Subtle glow behind missile -->
-  <ellipse cx="255" cy="290" rx="160" ry="220" fill="#e85d04" opacity="0.05"/>
+  <!-- Glow behind missile -->
+  <ellipse cx="600" cy="315" rx="200" ry="280" fill="#e85d04" opacity="0.06"/>
 
-  <!-- ═══ MISSILE (flat, centered at x=255) ═══ -->
+  <!-- ═══ MISSILE — centered at x=600, vertical ═══ -->
 
   <!-- Nose cone -->
-  <polygon points="255,75 222,162 288,162" fill="#e85d04"/>
+  <polygon points="600,105 564,210 636,210" fill="#e85d04"/>
 
   <!-- Body -->
-  <rect x="222" y="160" width="66" height="168" fill="#e85d04"/>
+  <rect x="564" y="208" width="72" height="195" fill="#e85d04"/>
 
-  <!-- Window detail -->
-  <circle cx="255" cy="222" r="14" fill="#0d0d0d" opacity="0.35"/>
-  <circle cx="255" cy="222" r="9" fill="#e85d04" opacity="0.5"/>
+  <!-- Window -->
+  <circle cx="600" cy="272" r="18" fill="#0d0d0d" opacity="0.4"/>
+  <circle cx="600" cy="272" r="11" fill="#e85d04" opacity="0.45"/>
 
   <!-- Left fin -->
-  <polygon points="222,278 166,382 222,352" fill="#e85d04"/>
+  <polygon points="564,330 494,450 564,418" fill="#e85d04"/>
 
   <!-- Right fin -->
-  <polygon points="288,278 344,382 288,352" fill="#e85d04"/>
+  <polygon points="636,330 706,450 636,418" fill="#e85d04"/>
 
   <!-- Nozzle -->
-  <rect x="232" y="326" width="46" height="32" rx="4" fill="#bf4b02"/>
+  <rect x="576" y="400" width="48" height="35" rx="5" fill="#bf4b02"/>
 
-  <!-- Exhaust flame (flat) -->
-  <polygon points="232,357 278,357 268,400 255,390 242,400" fill="#f48c06"/>
-  <polygon points="242,357 268,357 261,388 255,382 249,388" fill="#fed7aa"/>
+  <!-- Flame outer -->
+  <polygon points="576,433 624,433 612,490 600,478 588,490" fill="#f48c06"/>
 
-  <!-- ═══ RIGHT SIDE TEXT ═══ -->
-
-  <!-- IL badge -->
-  <rect x="748" y="122" width="184" height="70" rx="10" fill="#1a1010" stroke="#e85d04" stroke-width="2"/>
-  <text x="840" y="172" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="900" fill="#e85d04" text-anchor="middle" letter-spacing="8">IL</text>
-
-  <!-- Main title -->
-  <text x="840" y="295" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="bold" fill="#ffffff" text-anchor="middle">מצב התראות</text>
-
-  <!-- Divider -->
-  <line x1="565" y1="326" x2="1115" y2="326" stroke="#2a2020" stroke-width="1"/>
-
-  <!-- Subtitle -->
-  <text x="840" y="378" font-family="Arial, Helvetica, sans-serif" font-size="29" fill="#9ca3af" text-anchor="middle">נתוני פיקוד העורף בזמן אמת</text>
-
-  <!-- Pills -->
-  <rect x="616" y="415" width="184" height="44" rx="22" fill="#141414" stroke="#2a2020" stroke-width="1"/>
-  <text x="708" y="442" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#9ca3af" text-anchor="middle">ניתוח סטטיסטי</text>
-
-  <rect x="820" y="415" width="164" height="44" rx="22" fill="#141414" stroke="#2a2020" stroke-width="1"/>
-  <text x="902" y="442" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#9ca3af" text-anchor="middle">מיפוי אזורים</text>
-
-  <!-- URL -->
-  <text x="840" y="562" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#4b5563" text-anchor="middle">wenjygal.github.io/oref-dashboard</text>
+  <!-- Flame inner -->
+  <polygon points="586,433 614,433 607,476 600,468 593,476" fill="#fed7aa"/>
 
 </svg>
