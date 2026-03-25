@@ -9,7 +9,7 @@ function toDateStr(date) {
   return date.toISOString().slice(0, 10)
 }
 
-export default function FilterBar({ filters, setFilters, regions, eventTypes, cities, onReset }) {
+export default function FilterBar({ filters, setFilters, regions, councils, eventTypes, cities, onReset }) {
   function applyPreset(days) {
     if (days === null) {
       setFilters(f => ({ ...f, dateFrom: '', dateTo: '' }))
@@ -39,7 +39,6 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
 
   return (
     <div className="flex flex-col gap-3 bg-[#141414] border border-[#2a2020] rounded-xl p-3 sm:p-4">
-      {/* Quick date presets */}
       <div className="flex flex-wrap gap-2" role="group" aria-label="סינון מהיר לפי תקופה">
         {DATE_PRESETS.map(({ label, days }) => (
           <button
@@ -57,9 +56,7 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
         ))}
       </div>
 
-      {/* Filter controls */}
       <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 items-center">
-        {/* Date from */}
         <label className="flex items-center gap-1 sm:gap-2">
           <span className="text-gray-400 text-xs sm:text-sm shrink-0">מ:</span>
           <input
@@ -71,7 +68,6 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           />
         </label>
 
-        {/* Date to */}
         <label className="flex items-center gap-1 sm:gap-2">
           <span className="text-gray-400 text-xs sm:text-sm shrink-0">עד:</span>
           <input
@@ -83,10 +79,9 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           />
         </label>
 
-        {/* Region */}
         <select
           value={filters.region}
-          onChange={e => setFilters(f => ({ ...f, region: e.target.value, city: '' }))}
+          onChange={e => setFilters(f => ({ ...f, region: e.target.value, council: '', city: '' }))}
           aria-label="סינון לפי אזור"
           className={inputCls}
         >
@@ -94,7 +89,16 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           {regions.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
 
-        {/* City search */}
+        <select
+          value={filters.council}
+          onChange={e => setFilters(f => ({ ...f, council: e.target.value, city: '' }))}
+          aria-label="סינון לפי מועצה איזורית"
+          className={inputCls}
+        >
+          <option value="">כל המועצות</option>
+          {councils.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+
         <input
           type="text"
           value={filters.city}
@@ -108,7 +112,6 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           {cities.map(c => <option key={c} value={c} />)}
         </datalist>
 
-        {/* Event type */}
         <select
           value={filters.eventType}
           onChange={e => setFilters(f => ({ ...f, eventType: e.target.value }))}
@@ -119,7 +122,6 @@ export default function FilterBar({ filters, setFilters, regions, eventTypes, ci
           {eventTypes.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
 
-        {/* Reset */}
         <button
           onClick={onReset}
           className="flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white border border-[#333] rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#141414]"
