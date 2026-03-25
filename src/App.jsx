@@ -69,12 +69,18 @@ export default function App() {
     return baseFiltered.filter(r => filters.councils.includes(r.council))
   }, [baseFiltered, filters.councils])
 
-  const cities = useMemo(() => {
+  const searchTerms = useMemo(() => {
     const s = new Set(
       allData.flatMap(r => [r.city, r.region, r.council]).filter(Boolean)
     )
     return [...s].sort()
   }, [allData])
+
+  const searchOptions = useMemo(() => {
+    const q = filters.city.trim()
+    if (!q) return searchTerms.slice(0, 200)
+    return searchTerms.filter(term => term.includes(q)).slice(0, 200)
+  }, [searchTerms, filters.city])
 
   const filtered = useMemo(() => {
     if (!filters.city) return councilFiltered
@@ -202,7 +208,7 @@ export default function App() {
             regions={regions}
             councils={councils}
             eventTypes={eventTypes}
-            cities={cities}
+            cities={searchOptions}
             onReset={() => setFilters(DEFAULT_FILTERS)}
           />
         </div>
