@@ -134,18 +134,19 @@ export default function App() {
         דלג לתוכן הראשי
       </a>
 
-      <header className="relative overflow-hidden mb-6 rounded-3xl border border-[#2a2020] bg-[radial-gradient(circle_at_top_right,_rgba(255,132,0,0.18),_transparent_36%),linear-gradient(180deg,#151515_0%,#101010_100%)] p-5 sm:p-7 min-h-[220px]">
+      <header className="relative overflow-hidden mb-6 rounded-3xl border border-[#2a2020] bg-[radial-gradient(circle_at_top_right,_rgba(255,132,0,0.10),_transparent_35%),linear-gradient(180deg,#151515_0%,#101010_100%)] p-5 sm:p-7 min-h-[220px]">
         <img
           src="https://wenjygal.github.io/oref-dashboard/lion-logo.png"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-6 -translate-y-1/2 w-56 sm:w-72 lg:w-[340px] opacity-30 select-none"
+          className="pointer-events-none absolute top-1/2 right-6 -translate-y-1/2 w-48 sm:w-64 lg:w-[300px] opacity-95 select-none"
         />
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="max-w-2xl">
             <h1 className="text-2xl sm:text-4xl font-bold text-white">שאגת האריה</h1>
             <p className="text-[#ff8a00] text-sm sm:text-base mt-2">סטטיסטיקת אזעקות מתעדכנת</p>
+            <p className="text-gray-300 text-xs sm:text-sm mt-1">מתעדכן כל 4 שעות</p>
             <p className="text-gray-400 text-sm mt-2">סיכום אזעקות וניתוח סטטיסטי</p>
             <p className="text-gray-400 text-xs mt-1">
               הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף
