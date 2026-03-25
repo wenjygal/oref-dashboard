@@ -137,10 +137,10 @@ export default function App() {
       <header className="relative overflow-hidden mb-6 rounded-3xl border border-[#2a2020] bg-[radial-gradient(circle_at_top_right,_rgba(255,132,0,0.18),_transparent_36%),linear-gradient(180deg,#151515_0%,#101010_100%)] p-5 sm:p-7 min-h-[220px]">
         <img
           src="https://wenjygal.github.io/oref-dashboard/lion-logo.png"
-          alt="logo"
+          alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute -top-16 right-0 w-72 sm:w-[360px] lg:w-[500px] opacity-[0.22] select-none mix-blend-screen"
-
+          className="pointer-events-none absolute top-1/2 right-6 -translate-y-1/2 w-56 sm:w-72 lg:w-[340px] opacity-30 select-none"
+        />
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="max-w-2xl">
