@@ -10,8 +10,10 @@ function toDateStr(date) {
 }
 
 export default function FilterBar({ filters, setFilters, regions, councils, eventTypes, cities, onReset }) {
-  function selectedValues(options) {
-    return Array.from(options).filter(option => option.selected).map(option => option.value)
+  function toggleSelection(list, value) {
+    return list.includes(value)
+      ? list.filter(item => item !== value)
+      : [...list, value]
   }
 
   function applyPreset(days) {
@@ -40,6 +42,7 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
 
   const active = activePreset()
   const inputCls = "bg-[#1e1e1e] border border-[#333] text-white text-xs sm:text-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
+  const chipCls = "rounded-full border px-2.5 py-1 text-[11px] sm:text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#141414]"
 
   return (
     <div className="flex flex-col gap-3 bg-[#141414] border border-[#2a2020] rounded-xl p-3 sm:p-4">
@@ -83,33 +86,55 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
           />
         </label>
 
-        <label className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 col-span-2 sm:min-w-[260px]">
           <span className="text-gray-400 text-xs">אזורים</span>
-          <select
-            multiple
-            value={filters.regions}
-            onChange={e => setFilters(f => ({ ...f, regions: selectedValues(e.target.options), councils: [], city: '' }))}
-            aria-label="סינון לפי אזורים"
-            className={`${inputCls} min-h-24`}
-          >
-            {regions.map(r => <option key={r} value={r}>{r}</option>)}
-          </select>
-          <span className="text-[10px] text-gray-500">אפשר לבחור כמה עם Ctrl או Cmd</span>
-        </label>
+          <div className="flex flex-wrap gap-1.5 rounded-lg border border-[#333] bg-[#1e1e1e] p-2 min-h-12">
+            {regions.map(region => {
+              const selected = filters.regions.includes(region)
+              return (
+                <button
+                  key={region}
+                  type="button"
+                  onClick={() => setFilters(f => ({ ...f, regions: toggleSelection(f.regions, region), councils: [], city: '' }))}
+                  aria-pressed={selected}
+                  className={`${chipCls} ${
+                    selected
+                      ? 'border-[#e85d04] bg-[#e85d04] text-white'
+                      : 'border-[#444] bg-[#171717] text-gray-300 hover:border-[#e85d04] hover:text-white'
+                  }`}
+                >
+                  {region}
+                </button>
+              )
+            })}
+          </div>
+          <span className="text-[10px] text-gray-500">אפשר לבחור כמה בלחיצה רגילה</span>
+        </div>
 
-        <label className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 col-span-2 sm:min-w-[260px]">
           <span className="text-gray-400 text-xs">מועצות</span>
-          <select
-            multiple
-            value={filters.councils}
-            onChange={e => setFilters(f => ({ ...f, councils: selectedValues(e.target.options), city: '' }))}
-            aria-label="סינון לפי מועצות"
-            className={`${inputCls} min-h-24`}
-          >
-            {councils.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
-          <span className="text-[10px] text-gray-500">אפשר לבחור כמה עם Ctrl או Cmd</span>
-        </label>
+          <div className="flex flex-wrap gap-1.5 rounded-lg border border-[#333] bg-[#1e1e1e] p-2 min-h-12">
+            {councils.map(council => {
+              const selected = filters.councils.includes(council)
+              return (
+                <button
+                  key={council}
+                  type="button"
+                  onClick={() => setFilters(f => ({ ...f, councils: toggleSelection(f.councils, council), city: '' }))}
+                  aria-pressed={selected}
+                  className={`${chipCls} ${
+                    selected
+                      ? 'border-[#e85d04] bg-[#e85d04] text-white'
+                      : 'border-[#444] bg-[#171717] text-gray-300 hover:border-[#e85d04] hover:text-white'
+                  }`}
+                >
+                  {council}
+                </button>
+              )
+            })}
+          </div>
+          <span className="text-[10px] text-gray-500">אפשר לבחור כמה בלחיצה רגילה</span>
+        </div>
 
         <input
           type="text"
