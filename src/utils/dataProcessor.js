@@ -16,6 +16,7 @@ const CITY_GROUP_PREFIXES = [
   'ראשון לציון',
   'רמת גן',
   'הרצליה',
+  'חדרה',
   'באר שבע',
   'אשדוד',
   'אשקלון',
@@ -33,9 +34,24 @@ const CITY_GROUP_PREFIXES = [
   'נתניה',
 ]
 
+const CITY_GROUP_ALIASES = {
+  'תל אביב - דרום העיר ויפו': 'תל אביב',
+  'תל אביב - עבר הירקון': 'תל אביב',
+  'תל אביב - מרכז העיר': 'תל אביב',
+  'תל אביב - מזרח': 'תל אביב',
+  'ראשון לציון - מזרח': 'ראשון לציון',
+  'ראשון לציון - מערב': 'ראשון לציון',
+  'הרצליה - מרכז וגליל ים': 'הרצליה',
+  'הרצליה - מערב': 'הרצליה',
+  'חיפה - קריית חיים ושמואל': 'חיפה',
+  'צפת - עיר': 'צפת',
+  'קריית גת, כרמי גת': 'קריית גת',
+}
+
 function extractGroupedCity(city) {
   const rawCity = String(city || '').trim()
   if (!rawCity) return ''
+  if (CITY_GROUP_ALIASES[rawCity]) return CITY_GROUP_ALIASES[rawCity]
 
   for (const prefix of CITY_GROUP_PREFIXES) {
     if (rawCity === prefix) return prefix
