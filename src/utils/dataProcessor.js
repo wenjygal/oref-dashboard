@@ -11,6 +11,49 @@ const REGION_MERGE = {
 }
 function normalizeRegion(r) { return REGION_MERGE[r] || r }
 
+const MUNICIPAL_PREFIXES = [
+  'תל אביב',
+  'ראשון לציון',
+  'רמת גן',
+  'הרצליה',
+  'באר שבע',
+  'אשדוד',
+  'אשקלון',
+  'צפת',
+  'קריית שמונה',
+]
+
+const MUNICIPAL_AREA_HINTS = [
+  'מרכז',
+  'מזרח',
+  'מערב',
+  'צפון',
+  'דרום',
+  'העיר',
+  'יפו',
+  'גליל ים',
+  'עבר הירקון',
+  'קריית חיים',
+  'כרמי גת',
+]
+
+function normalizeAuthority(council, city) {
+  const rawCouncil = String(council || '').trim()
+  if (rawCouncil && rawCouncil !== 'לא ממופה') return rawCouncil
+
+  const rawCity = String(city || '').trim()
+  if (!rawCity) return ''
+
+  const [prefix, suffix] = rawCity.split(' - ').map(part => part?.trim())
+  if (prefix && suffix && MUNICIPAL_PREFIXES.includes(prefix)) {
+    if (MUNICIPAL_AREA_HINTS.some(hint => suffix.includes(hint))) {
+      return prefix
+    }
+  }
+
+  return rawCity
+}
+
 // Parse dd.mm.yyyy or dd/mm/yyyy or yyyy-mm-dd → yyyy-mm-dd
 function parseSheetDate(raw) {
   if (!raw) return null
@@ -43,7 +86,7 @@ export async function fetchSheetsData() {
         date: parseSheetDate(row['תאריך']),
         time: row['שעה'] || '',
         region,
-        council: row['מועצה'] || '',
+        council: normalizeAuthority(row['מועצה'], city),
         city,
         eventType: row['סוג_אירוע'] || '',
         source: 'sheets',

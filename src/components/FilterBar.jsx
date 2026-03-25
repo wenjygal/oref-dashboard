@@ -125,7 +125,7 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <label className="flex items-center gap-1 sm:gap-2">
           <span className="text-gray-400 text-xs sm:text-sm shrink-0">מ:</span>
           <input
@@ -148,21 +148,15 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
           />
         </label>
 
-        <MultiSelectField
-          label="אזורים"
-          values={regions}
-          selected={filters.regions}
-          onToggle={region => setFilters(f => ({ ...f, regions: toggleSelection(f.regions, region), councils: [], city: '' }))}
-          onClear={() => setFilters(f => ({ ...f, regions: [], councils: [], city: '' }))}
-        />
-
-        <MultiSelectField
-          label="מועצות"
-          values={councils}
-          selected={filters.councils}
-          onToggle={council => setFilters(f => ({ ...f, councils: toggleSelection(f.councils, council), city: '' }))}
-          onClear={() => setFilters(f => ({ ...f, councils: [], city: '' }))}
-        />
+        <select
+          value={filters.eventType}
+          onChange={e => setFilters(f => ({ ...f, eventType: e.target.value }))}
+          aria-label="סינון לפי סוג אירוע"
+          className={`${inputCls} w-full`}
+        >
+          <option value="">כל הסוגים</option>
+          {eventTypes.map(t => <option key={t} value={t}>{t}</option>)}
+        </select>
 
         <input
           type="text"
@@ -176,16 +170,24 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
         <datalist id="cities-datalist">
           {cities.map(c => <option key={c} value={c} />)}
         </datalist>
+      </div>
 
-        <select
-          value={filters.eventType}
-          onChange={e => setFilters(f => ({ ...f, eventType: e.target.value }))}
-          aria-label="סינון לפי סוג אירוע"
-          className={`${inputCls} w-full`}
-        >
-          <option value="">כל הסוגים</option>
-          {eventTypes.map(t => <option key={t} value={t}>{t}</option>)}
-        </select>
+      <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+        <MultiSelectField
+          label="אזורים"
+          values={regions}
+          selected={filters.regions}
+          onToggle={region => setFilters(f => ({ ...f, regions: toggleSelection(f.regions, region), councils: [], city: '' }))}
+          onClear={() => setFilters(f => ({ ...f, regions: [], councils: [], city: '' }))}
+        />
+
+        <MultiSelectField
+          label="מועצות וערים"
+          values={councils}
+          selected={filters.councils}
+          onToggle={council => setFilters(f => ({ ...f, councils: toggleSelection(f.councils, council), city: '' }))}
+          onClear={() => setFilters(f => ({ ...f, councils: [], city: '' }))}
+        />
       </div>
 
       <div className="flex justify-start">
