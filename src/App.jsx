@@ -5,7 +5,7 @@ import FilterBar from './components/FilterBar'
 import { EventTypeDonut, RegionBarChart, TimelineChart } from './components/Charts'
 import Top10Table from './components/Top10Table'
 
-const DEFAULT_FILTERS = { dateFrom: '', dateTo: '', region: '', council: '', eventType: '', city: '' }
+const DEFAULT_FILTERS = { dateFrom: '', dateTo: '', regions: [], councils: [], eventType: '', city: '' }
 
 const SUPER_REGIONS = [
   'גוש דן', 'שרון', 'שפלה', 'ירושלים', 'חיפה', 'גליל',
@@ -49,11 +49,11 @@ export default function App() {
       if (!r.region || !SUPER_REGIONS_SET.has(r.region)) return false
       if (filters.dateFrom && r.date < filters.dateFrom) return false
       if (filters.dateTo && r.date > filters.dateTo) return false
-      if (filters.region && r.region !== filters.region) return false
+      if (filters.regions.length && !filters.regions.includes(r.region)) return false
       if (filters.eventType && r.eventType !== filters.eventType) return false
       return true
     })
-  }, [allData, filters.dateFrom, filters.dateTo, filters.region, filters.eventType])
+  }, [allData, filters.dateFrom, filters.dateTo, filters.regions, filters.eventType])
 
   const councils = useMemo(() => {
     const s = new Set(
@@ -65,9 +65,9 @@ export default function App() {
   }, [baseFiltered])
 
   const councilFiltered = useMemo(() => {
-    if (!filters.council) return baseFiltered
-    return baseFiltered.filter(r => r.council === filters.council)
-  }, [baseFiltered, filters.council])
+    if (!filters.councils.length) return baseFiltered
+    return baseFiltered.filter(r => filters.councils.includes(r.council))
+  }, [baseFiltered, filters.councils])
 
   const cities = useMemo(() => {
     const s = new Set(councilFiltered.map(r => r.city).filter(Boolean))
@@ -139,7 +139,7 @@ export default function App() {
           src="https://wenjygal.github.io/oref-dashboard/lion-logo.png"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none relative mx-auto mt-4 block w-24 opacity-40 select-none sm:absolute sm:left-6 sm:top-1/2 sm:mt-0 sm:w-64 sm:-translate-y-1/2 sm:opacity-95 lg:w-[300px]"
+          className="pointer-events-none relative mx-auto mt-4 block w-24 opacity-70 select-none sm:absolute sm:left-6 sm:top-1/2 sm:mt-0 sm:w-64 sm:-translate-y-1/2 sm:opacity-95 lg:w-[300px]"
         />
 
         <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:pl-40 lg:pl-[320px]">

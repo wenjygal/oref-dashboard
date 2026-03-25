@@ -10,6 +10,10 @@ function toDateStr(date) {
 }
 
 export default function FilterBar({ filters, setFilters, regions, councils, eventTypes, cities, onReset }) {
+  function selectedValues(options) {
+    return Array.from(options).filter(option => option.selected).map(option => option.value)
+  }
+
   function applyPreset(days) {
     if (days === null) {
       setFilters(f => ({ ...f, dateFrom: '', dateTo: '' }))
@@ -79,25 +83,33 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
           />
         </label>
 
-        <select
-          value={filters.region}
-          onChange={e => setFilters(f => ({ ...f, region: e.target.value, council: '', city: '' }))}
-          aria-label="סינון לפי אזור"
-          className={inputCls}
-        >
-          <option value="">כל האזורים</option>
-          {regions.map(r => <option key={r} value={r}>{r}</option>)}
-        </select>
+        <label className="flex flex-col gap-1">
+          <span className="text-gray-400 text-xs">אזורים</span>
+          <select
+            multiple
+            value={filters.regions}
+            onChange={e => setFilters(f => ({ ...f, regions: selectedValues(e.target.options), councils: [], city: '' }))}
+            aria-label="סינון לפי אזורים"
+            className={`${inputCls} min-h-24`}
+          >
+            {regions.map(r => <option key={r} value={r}>{r}</option>)}
+          </select>
+          <span className="text-[10px] text-gray-500">אפשר לבחור כמה עם Ctrl או Cmd</span>
+        </label>
 
-        <select
-          value={filters.council}
-          onChange={e => setFilters(f => ({ ...f, council: e.target.value, city: '' }))}
-          aria-label="סינון לפי מועצה איזורית"
-          className={inputCls}
-        >
-          <option value="">כל המועצות</option>
-          {councils.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
+        <label className="flex flex-col gap-1">
+          <span className="text-gray-400 text-xs">מועצות</span>
+          <select
+            multiple
+            value={filters.councils}
+            onChange={e => setFilters(f => ({ ...f, councils: selectedValues(e.target.options), city: '' }))}
+            aria-label="סינון לפי מועצות"
+            className={`${inputCls} min-h-24`}
+          >
+            {councils.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <span className="text-[10px] text-gray-500">אפשר לבחור כמה עם Ctrl או Cmd</span>
+        </label>
 
         <input
           type="text"
