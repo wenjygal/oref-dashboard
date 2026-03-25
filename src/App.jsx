@@ -76,9 +76,9 @@ export default function App() {
   }, [baseFiltered, filters.councils])
 
   const cities = useMemo(() => {
-    const s = new Set(councilFiltered.map(r => r.city).filter(Boolean))
+    const s = new Set(allData.map(r => r.city).filter(Boolean))
     return [...s].sort()
-  }, [councilFiltered])
+  }, [allData])
 
   const filtered = useMemo(() => {
     if (!filters.city) return councilFiltered
