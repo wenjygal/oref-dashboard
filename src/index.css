@@ -9,6 +9,21 @@ body {
   direction: rtl;
 }
 
+.animate-chart-rise {
+  animation: chart-rise 320ms ease-out;
+}
+
+@keyframes chart-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #1a1010; }
 ::-webkit-scrollbar-thumb { background: #3a2020; border-radius: 3px; }

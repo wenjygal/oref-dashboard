@@ -91,3 +91,22 @@ export function TimelineChart({ data }) {
     </div>
   )
 }
+
+export function CouncilBarChart({ data }) {
+  return (
+    <div className="bg-[#141414] border border-[#2a2020] rounded-xl p-3 sm:p-5 animate-chart-rise">
+      <h2 className="text-sm font-medium text-gray-300 mb-4">סה"כ אזעקות לפי מועצה נבחרת</h2>
+      <div className="h-56 sm:h-72">
+        <ResponsiveContainer width="100%" height="100%" aria-label="גרף עמודות: אזעקות לפי מועצה נבחרת">
+          <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 18 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#2a2020" vertical={false} />
+            <XAxis dataKey="name" tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} angle={-12} textAnchor="end" interval={0} height={56} />
+            <YAxis tick={{ fill: '#888', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <Tooltip contentStyle={tooltipStyle} itemStyle={tooltipItemStyle} labelStyle={tooltipLabelStyle} cursor={{ fill: 'rgba(232,93,4,0.1)' }} />
+            <Bar dataKey="value" fill="#f48c06" radius={[4, 4, 0, 0]} animationDuration={650} animationEasing="ease-out" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  )
+}

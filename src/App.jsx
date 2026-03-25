@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { useAlertData } from './hooks/useAlertData'
 import KPICard from './components/KPICard'
 import FilterBar from './components/FilterBar'
-import { EventTypeDonut, RegionBarChart, TimelineChart } from './components/Charts'
+import { CouncilBarChart, EventTypeDonut, RegionBarChart, TimelineChart } from './components/Charts'
 import Top10Table from './components/Top10Table'
 
 const DEFAULT_FILTERS = { dateFrom: '', dateTo: '', regions: [], councils: [], eventType: '', city: '' }
@@ -94,6 +94,16 @@ export default function App() {
   const regionChartData = topEntries(
     Object.fromEntries(Object.entries(regionCounts).filter(([k]) => SUPER_REGIONS_SET.has(k)))
   )
+  const selectedCouncilChartData = useMemo(() => {
+    if (!filters.councils.length) return []
+    return topEntries(
+      Object.fromEntries(
+        Object.entries(count(filtered, 'council'))
+          .filter(([name]) => filters.councils.includes(name))
+      ),
+      filters.councils.length
+    )
+  }, [filtered, filters.councils])
 
   const timelineData = useMemo(() => {
     const byDate = count(filtered, 'date')
@@ -236,6 +246,12 @@ export default function App() {
             <div className="mb-4">
               <TimelineChart data={timelineData} />
             </div>
+
+            {filters.councils.length > 0 && selectedCouncilChartData.length > 0 && (
+              <div className="mb-4">
+                <CouncilBarChart data={selectedCouncilChartData} />
+              </div>
+            )}
 
             <Top10Table data={top10Cities} />
           </>
