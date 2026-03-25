@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchSheetsData, fetchTzevaadomData, mergeAndDedupe } from '../utils/dataProcessor'
+import { fetchSheetsData } from '../utils/dataProcessor'
 
 export function useAlertData() {
   const [allData, setAllData] = useState([])
@@ -11,12 +11,8 @@ export function useAlertData() {
     setLoading(true)
     setError(null)
     try {
-      const [sheets, tzevaadom] = await Promise.all([
-        fetchSheetsData(),
-        fetchTzevaadomData(),
-      ])
-      const merged = mergeAndDedupe(sheets, tzevaadom)
-      setAllData(merged)
+      const sheets = await fetchSheetsData()
+      setAllData(sheets)
       setLastUpdated(new Date())
     } catch (e) {
       setError(e.message)
