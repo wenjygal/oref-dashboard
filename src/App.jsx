@@ -139,10 +139,10 @@ export default function App() {
           src="https://wenjygal.github.io/oref-dashboard/lion-logo.png"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-6 -translate-y-1/2 w-48 sm:w-64 lg:w-[300px] opacity-95 select-none"
+          className="pointer-events-none relative mx-auto mt-4 block w-24 opacity-40 select-none sm:absolute sm:left-6 sm:top-1/2 sm:mt-0 sm:w-64 sm:-translate-y-1/2 sm:opacity-95 lg:w-[300px]"
         />
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:pl-40 lg:pl-[320px]">
           <div className="max-w-2xl">
             <h1 className="text-2xl sm:text-4xl font-bold text-white">שאגת האריה</h1>
             <p className="text-[#ff8a00] text-sm sm:text-base mt-2">סטטיסטיקת אזעקות מתעדכנת</p>
