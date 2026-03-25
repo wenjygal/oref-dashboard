@@ -137,7 +137,7 @@ export default function App() {
       <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-6">
         <div className="flex items-start gap-3">
           <img
-            src="./og-lion-facepalm.png"
+            src={`${import.meta.env.BASE_URL}og-lion-facepalm.png`}
             alt="לוגו שאגת האריה"
             className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-[#2a2020] shadow-lg shadow-black/30"
           />
