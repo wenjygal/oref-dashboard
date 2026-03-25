@@ -134,38 +134,40 @@ export default function App() {
         דלג לתוכן הראשי
       </a>
 
-      <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-6">
-        <div className="flex items-start gap-3">
-          <img
-            src={`${import.meta.env.BASE_URL}og-lion-facepalm.png`}
-            alt="לוגו שאגת האריה"
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-[#2a2020] shadow-lg shadow-black/30"
-          />
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">שאגת האריה</h1>
-            <p className="text-gray-400 text-sm mt-1">סטטיסטיקת אזעקות מתעדכנת</p>
-            <p className="text-gray-500 text-xs mt-0.5">סיכום אזעקות וניתוח סטטיסטי</p>
-            <p className="text-gray-400 text-xs mt-0.5">
+      <header className="relative overflow-hidden mb-6 rounded-3xl border border-[#2a2020] bg-[radial-gradient(circle_at_top_right,_rgba(255,132,0,0.18),_transparent_36%),linear-gradient(180deg,#151515_0%,#101010_100%)] p-5 sm:p-7 min-h-[220px]">
+        <img
+          src="https://wenjygal.github.io/oref-dashboard/Astonished%20lion%20facepalm%20logo.png"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-12 right-0 w-64 sm:w-80 lg:w-[420px] opacity-[0.14] select-none"
+        />
+
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="max-w-2xl">
+            <h1 className="text-2xl sm:text-4xl font-bold text-white">שאגת האריה</h1>
+            <p className="text-[#ff8a00] text-sm sm:text-base mt-2">סטטיסטיקת אזעקות מתעדכנת</p>
+            <p className="text-gray-400 text-sm mt-2">סיכום אזעקות וניתוח סטטיסטי</p>
+            <p className="text-gray-400 text-xs mt-1">
               הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף
               {earliestDate && ` (תחילת נתונים: ${earliestDate})`}
             </p>
           </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          {lastUpdatedStr && (
-            <span aria-live="polite" aria-atomic="true" className="text-gray-400 text-xs">
-              עודכן לאחרונה ב-{lastUpdatedStr}
-            </span>
-          )}
-          <button
-            onClick={reload}
-            disabled={loading}
-            aria-label={loading ? 'טוען נתונים' : 'רענן נתונים'}
-            className="flex items-center gap-1 text-sm text-gray-400 hover:text-white border border-[#333] rounded-lg px-3 py-2 transition-colors disabled:opacity-40 focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#0d0d0d]"
-          >
-            <span aria-hidden="true">{loading ? '...' : '↺'}</span> רענן
-          </button>
+          <div className="relative z-10 flex items-center gap-3">
+            {lastUpdatedStr && (
+              <span aria-live="polite" aria-atomic="true" className="text-gray-400 text-xs">
+                עודכן לאחרונה ב-{lastUpdatedStr}
+              </span>
+            )}
+            <button
+              onClick={reload}
+              disabled={loading}
+              aria-label={loading ? 'טוען נתונים' : 'רענן נתונים'}
+              className="flex items-center gap-1 text-sm text-gray-300 hover:text-white border border-[#333] rounded-lg px-3 py-2 transition-colors disabled:opacity-40 focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#0d0d0d]"
+            >
+              <span aria-hidden="true">{loading ? '...' : '↺'}</span> רענן
+            </button>
+          </div>
         </div>
       </header>
 
