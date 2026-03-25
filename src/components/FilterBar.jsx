@@ -16,21 +16,21 @@ function MultiSelectField({ label, values, selected, onToggle, onClear }) {
   const selectedLabel = selected.length ? `${selected.length} נבחרו` : `כל ה${label}`
 
   return (
-    <div className="flex flex-col gap-1 col-span-2 sm:min-w-[260px]">
+    <div className="relative flex flex-col gap-1 col-span-2 sm:min-w-[220px]">
       <span className="text-gray-400 text-xs">{label}</span>
       <div className="rounded-lg border border-[#333] bg-[#1e1e1e]">
         <button
           type="button"
           onClick={() => setOpen(v => !v)}
           aria-expanded={open}
-          className="flex w-full items-center justify-between gap-2 px-3 py-2 text-right text-white text-xs sm:text-sm"
+          className="flex h-[38px] w-full items-center justify-between gap-2 px-3 py-2 text-right text-white text-xs sm:h-[42px] sm:text-sm"
         >
           <span className="truncate">{selectedLabel}</span>
           <span className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`}>⌄</span>
         </button>
 
         {open && (
-          <div className="border-t border-[#333] p-2">
+          <div className="absolute right-0 top-full z-30 mt-2 w-full min-w-[240px] rounded-lg border border-[#333] bg-[#1e1e1e] p-2 shadow-[0_12px_32px_rgba(0,0,0,0.45)]">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-[10px] text-gray-500">אפשר לבחור כמה בלחיצה רגילה</span>
               {selected.length > 0 && (
@@ -125,7 +125,7 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 items-center">
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-start sm:gap-3">
         <label className="flex items-center gap-1 sm:gap-2">
           <span className="text-gray-400 text-xs sm:text-sm shrink-0">מ:</span>
           <input
