@@ -43,6 +43,7 @@ const CITY_GROUP_ALIASES = {
   'ראשון לציון - מערב': 'ראשון לציון',
   'הרצליה - מרכז וגליל ים': 'הרצליה',
   'הרצליה - מערב': 'הרצליה',
+  'נתניה - מערב': 'נתניה',
   'חיפה - קריית חיים ושמואל': 'חיפה',
   'צפת - עיר': 'צפת',
   'קריית גת, כרמי גת': 'קריית גת',
@@ -92,7 +93,8 @@ export async function fetchSheetsData() {
 
   return data
     .map(row => {
-      const city = row['ישוב'] || ''
+      const sourceCity = row['ישוב'] || ''
+      const city = extractGroupedCity(sourceCity)
       const rawRegion = row['איזור'] || row['אזור'] || ''
       const region = normalizeRegion(
         (rawRegion && rawRegion !== 'לא ממופה')
