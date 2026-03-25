@@ -16,7 +16,7 @@ function MultiSelectField({ label, values, selected, onToggle, onClear }) {
   const selectedLabel = selected.length ? `${selected.length} נבחרו` : `כל ה${label}`
 
   return (
-    <div className="relative flex flex-col gap-1 col-span-2 sm:min-w-[220px]">
+    <div className="relative flex flex-col gap-1">
       <span className="text-gray-400 text-xs">{label}</span>
       <div className="rounded-lg border border-[#333] bg-[#1e1e1e]">
         <button
@@ -125,7 +125,7 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-start sm:gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
         <label className="flex items-center gap-1 sm:gap-2">
           <span className="text-gray-400 text-xs sm:text-sm shrink-0">מ:</span>
           <input
@@ -171,7 +171,7 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
           list="cities-datalist"
           placeholder="חיפוש ישוב..."
           aria-label="חיפוש לפי ישוב"
-          className={`${inputCls} placeholder-gray-600 w-full sm:w-36`}
+          className={`${inputCls} placeholder-gray-600 w-full`}
         />
         <datalist id="cities-datalist">
           {cities.map(c => <option key={c} value={c} />)}
@@ -181,12 +181,14 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
           value={filters.eventType}
           onChange={e => setFilters(f => ({ ...f, eventType: e.target.value }))}
           aria-label="סינון לפי סוג אירוע"
-          className={inputCls}
+          className={`${inputCls} w-full`}
         >
           <option value="">כל הסוגים</option>
           {eventTypes.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
+      </div>
 
+      <div className="flex justify-start">
         <button
           onClick={onReset}
           className="flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white border border-[#333] rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e85d04] focus:ring-offset-1 focus:ring-offset-[#141414]"
