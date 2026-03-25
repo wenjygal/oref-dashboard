@@ -11,7 +11,7 @@ const REGION_MERGE = {
 }
 function normalizeRegion(r) { return REGION_MERGE[r] || r }
 
-const MUNICIPAL_PREFIXES = [
+const CITY_GROUP_PREFIXES = [
   'תל אביב',
   'ראשון לציון',
   'רמת גן',
@@ -21,35 +21,37 @@ const MUNICIPAL_PREFIXES = [
   'אשקלון',
   'צפת',
   'קריית שמונה',
+  'חיפה',
+  'יהוד',
+  'מודיעין',
+  'ירושלים',
+  'רמלה',
+  'לוד',
+  'נהריה',
+  'עכו',
+  'טבריה',
+  'נתניה',
 ]
 
-const MUNICIPAL_AREA_HINTS = [
-  'מרכז',
-  'מזרח',
-  'מערב',
-  'צפון',
-  'דרום',
-  'העיר',
-  'יפו',
-  'גליל ים',
-  'עבר הירקון',
-  'קריית חיים',
-  'כרמי גת',
-]
+function extractGroupedCity(city) {
+  const rawCity = String(city || '').trim()
+  if (!rawCity) return ''
+
+  for (const prefix of CITY_GROUP_PREFIXES) {
+    if (rawCity === prefix) return prefix
+    if (rawCity.startsWith(`${prefix} - `)) return prefix
+    if (rawCity.startsWith(`${prefix},`)) return prefix
+  }
+
+  return rawCity
+}
 
 function normalizeAuthority(council, city) {
   const rawCouncil = String(council || '').trim()
   if (rawCouncil && rawCouncil !== 'לא ממופה') return rawCouncil
 
-  const rawCity = String(city || '').trim()
+  const rawCity = extractGroupedCity(city)
   if (!rawCity) return ''
-
-  const [prefix, suffix] = rawCity.split(' - ').map(part => part?.trim())
-  if (prefix && suffix && MUNICIPAL_PREFIXES.includes(prefix)) {
-    if (MUNICIPAL_AREA_HINTS.some(hint => suffix.includes(hint))) {
-      return prefix
-    }
-  }
 
   return rawCity
 }
