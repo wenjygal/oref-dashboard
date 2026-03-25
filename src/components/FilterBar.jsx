@@ -17,7 +17,7 @@ function MultiSelectField({ label, values, selected, onToggle, onClear }) {
 
   return (
     <div className="relative flex flex-col gap-1">
-      <span className="text-gray-400 text-xs">{label}</span>
+      <span className="h-4 text-gray-400 text-xs">{label}</span>
       <div className="rounded-lg border border-[#333] bg-[#1e1e1e]">
         <button
           type="button"
@@ -105,6 +105,7 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
 
   const active = activePreset()
   const inputCls = "bg-[#1e1e1e] border border-[#333] text-white text-xs sm:text-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 focus:outline-none focus:border-[#e85d04] focus:ring-1 focus:ring-[#e85d04]"
+  const fieldLabelCls = "h-4 text-gray-400 text-xs"
 
   return (
     <div className="flex flex-col gap-3 bg-[#141414] border border-[#2a2020] rounded-xl p-3 sm:p-4">
@@ -126,47 +127,53 @@ export default function FilterBar({ filters, setFilters, regions, councils, even
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        <label className="flex items-center gap-1 sm:gap-2">
-          <span className="text-gray-400 text-xs sm:text-sm shrink-0">מ:</span>
+        <label className="flex flex-col gap-1">
+          <span className={fieldLabelCls}>מ:</span>
           <input
             type="date"
             value={filters.dateFrom}
             onChange={e => setFilters(f => ({ ...f, dateFrom: e.target.value }))}
             aria-label="מתאריך"
-            className={`${inputCls} w-full`}
+            className={`${inputCls} h-[38px] w-full sm:h-[42px]`}
           />
         </label>
 
-        <label className="flex items-center gap-1 sm:gap-2">
-          <span className="text-gray-400 text-xs sm:text-sm shrink-0">עד:</span>
+        <label className="flex flex-col gap-1">
+          <span className={fieldLabelCls}>עד:</span>
           <input
             type="date"
             value={filters.dateTo}
             onChange={e => setFilters(f => ({ ...f, dateTo: e.target.value }))}
             aria-label="עד תאריך"
-            className={`${inputCls} w-full`}
+            className={`${inputCls} h-[38px] w-full sm:h-[42px]`}
           />
         </label>
 
-        <select
-          value={filters.eventType}
-          onChange={e => setFilters(f => ({ ...f, eventType: e.target.value }))}
-          aria-label="סינון לפי סוג אירוע"
-          className={`${inputCls} w-full`}
-        >
-          <option value="">כל הסוגים</option>
-          {eventTypes.map(t => <option key={t} value={t}>{t}</option>)}
-        </select>
+        <label className="flex flex-col gap-1">
+          <span className={fieldLabelCls}>סוג אירוע</span>
+          <select
+            value={filters.eventType}
+            onChange={e => setFilters(f => ({ ...f, eventType: e.target.value }))}
+            aria-label="סינון לפי סוג אירוע"
+            className={`${inputCls} h-[38px] w-full sm:h-[42px]`}
+          >
+            <option value="">כל הסוגים</option>
+            {eventTypes.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </label>
 
-        <input
-          type="text"
-          value={filters.city}
-          onChange={e => setFilters(f => ({ ...f, city: e.target.value }))}
-          list="cities-datalist"
-          placeholder="חיפוש ישוב..."
-          aria-label="חיפוש לפי ישוב"
-          className={`${inputCls} placeholder-gray-600 w-full`}
-        />
+        <label className="flex flex-col gap-1">
+          <span className={fieldLabelCls}>ישוב</span>
+          <input
+            type="text"
+            value={filters.city}
+            onChange={e => setFilters(f => ({ ...f, city: e.target.value }))}
+            list="cities-datalist"
+            placeholder="חיפוש ישוב..."
+            aria-label="חיפוש לפי ישוב"
+            className={`${inputCls} placeholder-gray-600 h-[38px] w-full sm:h-[42px]`}
+          />
+        </label>
         <datalist id="cities-datalist">
           {cities.map(c => <option key={c} value={c} />)}
         </datalist>
