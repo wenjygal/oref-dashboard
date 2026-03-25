@@ -70,14 +70,20 @@ export default function App() {
   }, [baseFiltered, filters.councils])
 
   const cities = useMemo(() => {
-    const s = new Set(allData.map(r => r.city).filter(Boolean))
+    const s = new Set(
+      allData.flatMap(r => [r.city, r.region, r.council]).filter(Boolean)
+    )
     return [...s].sort()
   }, [allData])
 
   const filtered = useMemo(() => {
     if (!filters.city) return councilFiltered
     const q = filters.city.trim()
-    return councilFiltered.filter(r => r.city && r.city.includes(q))
+    return councilFiltered.filter(r =>
+      (r.city && r.city.includes(q)) ||
+      (r.region && r.region.includes(q)) ||
+      (r.council && r.council.includes(q))
+    )
   }, [councilFiltered, filters.city])
 
   const totalAlerts = filtered.length
