@@ -101,6 +101,7 @@ export async function fetchSheetsData() {
       )
 
       return {
+        unixTime: Number(row['unix_time'] || 0),
         date: parseSheetDate(row['תאריך']),
         time: row['שעה'] || '',
         region,

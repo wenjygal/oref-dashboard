@@ -30,12 +30,6 @@ function topEntries(obj, n = 10) {
     .map(([name, value]) => ({ name, value }))
 }
 
-function countUniqueEvents(rows) {
-  return new Set(
-    rows.map(row => `${row.date || ''}|${row.time || ''}|${row.eventType || ''}`)
-  ).size
-}
-
 export default function App() {
   const { allData, loading, error, lastUpdated, reload } = useAlertData()
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
@@ -86,7 +80,7 @@ export default function App() {
     return councilFiltered.filter(r => r.city && r.city.includes(q))
   }, [councilFiltered, filters.city])
 
-  const totalAlerts = useMemo(() => countUniqueEvents(filtered), [filtered])
+  const totalAlerts = filtered.length
   const uniqueCities = new Set(filtered.map(r => r.city)).size
   const eventTypeCounts = count(filtered, 'eventType')
   const regionCounts = count(filtered, 'region')
