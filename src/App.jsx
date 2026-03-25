@@ -139,8 +139,8 @@ export default function App() {
           src="https://wenjygal.github.io/oref-dashboard/Astonished%20lion%20facepalm%20logo.png"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute -top-12 right-0 w-64 sm:w-80 lg:w-[420px] opacity-[0.14] select-none"
-        />
+          className="pointer-events-none absolute -top-16 right-0 w-72 sm:w-[360px] lg:w-[500px] opacity-[0.22] select-none mix-blend-screen"
+
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="max-w-2xl">
