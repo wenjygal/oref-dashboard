@@ -11,68 +11,6 @@ const REGION_MERGE = {
 }
 function normalizeRegion(r) { return REGION_MERGE[r] || r }
 
-const CITY_GROUP_PREFIXES = [
-  'תל אביב',
-  'ראשון לציון',
-  'רמת גן',
-  'הרצליה',
-  'חדרה',
-  'באר שבע',
-  'אשדוד',
-  'אשקלון',
-  'צפת',
-  'קריית שמונה',
-  'חיפה',
-  'יהוד',
-  'מודיעין',
-  'ירושלים',
-  'רמלה',
-  'לוד',
-  'נהריה',
-  'עכו',
-  'טבריה',
-  'נתניה',
-]
-
-const CITY_GROUP_ALIASES = {
-  'תל אביב - דרום העיר ויפו': 'תל אביב',
-  'תל אביב - עבר הירקון': 'תל אביב',
-  'תל אביב - מרכז העיר': 'תל אביב',
-  'תל אביב - מזרח': 'תל אביב',
-  'ראשון לציון - מזרח': 'ראשון לציון',
-  'ראשון לציון - מערב': 'ראשון לציון',
-  'הרצליה - מרכז וגליל ים': 'הרצליה',
-  'הרצליה - מערב': 'הרצליה',
-  'נתניה - מערב': 'נתניה',
-  'חיפה - קריית חיים ושמואל': 'חיפה',
-  'צפת - עיר': 'צפת',
-  'קריית גת, כרמי גת': 'קריית גת',
-}
-
-function extractGroupedCity(city) {
-  const rawCity = String(city || '').trim()
-  if (!rawCity) return ''
-  if (CITY_GROUP_ALIASES[rawCity]) return CITY_GROUP_ALIASES[rawCity]
-
-  for (const prefix of CITY_GROUP_PREFIXES) {
-    if (rawCity === prefix) return prefix
-    if (rawCity.startsWith(`${prefix} - `)) return prefix
-    if (rawCity.startsWith(`${prefix},`)) return prefix
-  }
-
-  return rawCity
-}
-
-function normalizeAuthority(council, city) {
-  const rawCouncil = String(council || '').trim()
-  if (rawCouncil && rawCouncil !== 'לא ממופה') return rawCouncil
-
-  const rawCity = extractGroupedCity(city)
-  if (!rawCity) return ''
-
-  return rawCity
-}
-
 // Parse dd.mm.yyyy or dd/mm/yyyy or yyyy-mm-dd → yyyy-mm-dd
 function parseSheetDate(raw) {
   if (!raw) return null
@@ -93,8 +31,7 @@ export async function fetchSheetsData() {
 
   return data
     .map(row => {
-      const sourceCity = row['ישוב'] || ''
-      const city = extractGroupedCity(sourceCity)
+      const city = row['ישוב'] || ''
       const rawRegion = row['איזור'] || row['אזור'] || ''
       const region = normalizeRegion(
         (rawRegion && rawRegion !== 'לא ממופה')
@@ -107,7 +44,7 @@ export async function fetchSheetsData() {
         date: parseSheetDate(row['תאריך']),
         time: row['שעה'] || '',
         region,
-        council: normalizeAuthority(row['מועצה'], city),
+        council: row['מועצה'] || '',
         city,
         eventType: row['סוג_אירוע'] || '',
         source: 'sheets',
