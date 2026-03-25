@@ -5,7 +5,7 @@ import FilterBar from './components/FilterBar'
 import { EventTypeDonut, RegionBarChart, TimelineChart } from './components/Charts'
 import Top10Table from './components/Top10Table'
 
-const DEFAULT_FILTERS = { dateFrom: '', dateTo: '', region: '', eventType: '', city: '' }
+const DEFAULT_FILTERS = { dateFrom: '', dateTo: '', region: '', council: '', eventType: '', city: '' }
 
 const SUPER_REGIONS = [
   'גוש דן', 'שרון', 'שפלה', 'ירושלים', 'חיפה', 'גליל',
@@ -34,7 +34,6 @@ export default function App() {
   const { allData, loading, error, lastUpdated, reload } = useAlertData()
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
 
-  // Only super-regions that actually appear in the data, in canonical order
   const regions = useMemo(() => {
     const inData = new Set(allData.map(r => r.region).filter(Boolean))
     return SUPER_REGIONS.filter(r => inData.has(r))
@@ -45,7 +44,6 @@ export default function App() {
     return [...s].sort()
   }, [allData])
 
-  // Base filtered data (without city filter) — used to derive city options
   const baseFiltered = useMemo(() => {
     return allData.filter(r => {
       if (!r.region || !SUPER_REGIONS_SET.has(r.region)) return false
@@ -57,20 +55,31 @@ export default function App() {
     })
   }, [allData, filters.dateFrom, filters.dateTo, filters.region, filters.eventType])
 
-  // City options derived from baseFiltered (contextual to current filters)
-  const cities = useMemo(() => {
-    const s = new Set(baseFiltered.map(r => r.city).filter(Boolean))
+  const councils = useMemo(() => {
+    const s = new Set(
+      baseFiltered
+        .map(r => r.council)
+        .filter(c => c && c !== 'לא ממופה')
+    )
     return [...s].sort()
   }, [baseFiltered])
 
-  // Full filtered data (includes city text search)
-  const filtered = useMemo(() => {
-    if (!filters.city) return baseFiltered
-    const q = filters.city.trim()
-    return baseFiltered.filter(r => r.city && r.city.includes(q))
-  }, [baseFiltered, filters.city])
+  const councilFiltered = useMemo(() => {
+    if (!filters.council) return baseFiltered
+    return baseFiltered.filter(r => r.council === filters.council)
+  }, [baseFiltered, filters.council])
 
-  // KPIs
+  const cities = useMemo(() => {
+    const s = new Set(councilFiltered.map(r => r.city).filter(Boolean))
+    return [...s].sort()
+  }, [councilFiltered])
+
+  const filtered = useMemo(() => {
+    if (!filters.city) return councilFiltered
+    const q = filters.city.trim()
+    return councilFiltered.filter(r => r.city && r.city.includes(q))
+  }, [councilFiltered, filters.city])
+
   const totalAlerts = filtered.length
   const uniqueCities = new Set(filtered.map(r => r.city)).size
   const eventTypeCounts = count(filtered, 'eventType')
@@ -81,7 +90,6 @@ export default function App() {
     Object.fromEntries(Object.entries(regionCounts).filter(([k]) => SUPER_REGIONS_SET.has(k))), 1
   )[0]
 
-  // Chart data
   const eventTypeChartData = topEntries(eventTypeCounts)
   const regionChartData = topEntries(
     Object.fromEntries(Object.entries(regionCounts).filter(([k]) => SUPER_REGIONS_SET.has(k)))
@@ -90,7 +98,7 @@ export default function App() {
   const timelineData = useMemo(() => {
     const byDate = count(filtered, 'date')
     return Object.entries(byDate).sort((a, b) => a[0].localeCompare(b[0])).map(([date, value]) => ({
-      date: date.slice(5), // MM-DD
+      date: date.slice(5),
       value,
     }))
   }, [filtered])
@@ -119,8 +127,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] px-3 py-4 sm:p-6 max-w-7xl mx-auto">
-
-      {/* Skip navigation */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:right-2 focus:z-50 focus:bg-[#e85d04] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:outline-none"
@@ -128,19 +134,29 @@ export default function App() {
         דלג לתוכן הראשי
       </a>
 
-      {/* Header */}
       <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-6">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white">מצב אזעקות IL</h1>
-          <p className="text-gray-400 text-sm mt-1">סיכום אזעקות וניתוח סטטיסטי</p>
-          <p className="text-gray-400 text-xs mt-0.5">
-            הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף
-            {earliestDate && ` (תחילת נתונים: ${earliestDate})`}
-          </p>
+        <div className="flex items-start gap-3">
+          <img
+            src="./og-lion-facepalm.png"
+            alt="לוגו שאגת האריה"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-[#2a2020] shadow-lg shadow-black/30"
+          />
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">שאגת האריה</h1>
+            <p className="text-gray-400 text-sm mt-1">סטטיסטיקת אזעקות מתעדכנת</p>
+            <p className="text-gray-500 text-xs mt-0.5">סיכום אזעקות וניתוח סטטיסטי</p>
+            <p className="text-gray-400 text-xs mt-0.5">
+              הנתונים כוללים אזעקות צבע אדום בלבד ממערכת פיקוד העורף
+              {earliestDate && ` (תחילת נתונים: ${earliestDate})`}
+            </p>
+          </div>
         </div>
+
         <div className="flex items-center gap-3">
           {lastUpdatedStr && (
-            <span aria-live="polite" aria-atomic="true" className="text-gray-400 text-xs">עודכן לאחרונה ב-{lastUpdatedStr}</span>
+            <span aria-live="polite" aria-atomic="true" className="text-gray-400 text-xs">
+              עודכן לאחרונה ב-{lastUpdatedStr}
+            </span>
           )}
           <button
             onClick={reload}
@@ -153,22 +169,19 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main content */}
       <main id="main-content">
-
-        {/* Error */}
         {error && (
           <div role="alert" className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-6 text-red-300 text-sm">
             שגיאה בטעינת נתונים: {error}
           </div>
         )}
 
-        {/* Filters */}
         <div className="mb-6">
           <FilterBar
             filters={filters}
             setFilters={setFilters}
             regions={regions}
+            councils={councils}
             eventTypes={eventTypes}
             cities={cities}
             onReset={() => setFilters(DEFAULT_FILTERS)}
@@ -176,12 +189,13 @@ export default function App() {
         </div>
 
         {loading && (
-          <div role="status" aria-live="polite" className="text-center text-gray-400 py-20 text-sm">טוען נתונים...</div>
+          <div role="status" aria-live="polite" className="text-center text-gray-400 py-20 text-sm">
+            טוען נתונים...
+          </div>
         )}
 
         {!loading && (
           <>
-            {/* KPIs */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <KPICard
                 icon="🔥"
@@ -211,29 +225,33 @@ export default function App() {
               />
             </div>
 
-            {/* Charts row 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
               <EventTypeDonut data={eventTypeChartData} />
               <RegionBarChart data={regionChartData} />
             </div>
 
-            {/* Timeline */}
             <div className="mb-4">
               <TimelineChart data={timelineData} />
             </div>
 
-            {/* Top 10 */}
             <Top10Table data={top10Cities} />
           </>
         )}
-
       </main>
 
-      {/* Footer */}
       <footer className="mt-8 pt-6 border-t border-[#2a2020] text-center text-xs text-gray-400 space-y-1">
         <p>האתר מציג נתונים רשמיים של פיקוד העורף. הנתונים מוצגים כפי שהתקבלו — אין אחריות לנכונותם והשימוש באתר על אחריות המשתמש בלבד.</p>
         <p>האתר נגיש לפי התקן הישראלי · פתוח לכולם · אינו שומר פרטים אישיים.</p>
-        <p>ליצירת קשר: <a href="mailto:meimagineai@gmail.com" title="meimagineai@gmail.com" className="hover:text-white underline transition-colors focus:outline-none focus:ring-1 focus:ring-[#e85d04] rounded">MEIMAGINEAI</a></p>
+        <p>
+          ליצירת קשר:{' '}
+          <a
+            href="mailto:meimagineai@gmail.com"
+            title="meimagineai@gmail.com"
+            className="hover:text-white underline transition-colors focus:outline-none focus:ring-1 focus:ring-[#e85d04] rounded"
+          >
+            MEIMAGINEAI
+          </a>
+        </p>
       </footer>
     </div>
   )
